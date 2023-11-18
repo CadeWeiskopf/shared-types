@@ -1,6 +1,7 @@
 import emailValidator from "email-validator";
 
 export type IEmailData = {
+  [key: string]: string | undefined;
   firstName: string;
   lastName: string;
   companyName?: string;
