@@ -1,0 +1,20 @@
+{
+  "name": "@cadewdev/shared-types",
+  "version": "1.0.0",
+  "description": "Typings for cadew.dev architecture",
+  "main": "types.ts",
+  "types": "types.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "email-validator": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/email-validator": "^1.0.6"
+  },
+  "private": true
+}
