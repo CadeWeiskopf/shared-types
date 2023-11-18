@@ -1,6 +1,6 @@
 import emailValidator from "email-validator";
 
-export type IEmailData = {
+export type EmailData = {
   [key: string]: string | undefined;
   firstName: string;
   lastName: string;
@@ -9,7 +9,7 @@ export type IEmailData = {
   phone?: string;
 };
 
-export const isIEmailData = (data: any): data is IEmailData => {
+export const isIEmailData = (data: any): data is EmailData => {
   if (
     typeof data !== "object" ||
     typeof data.firstName !== "string" ||
