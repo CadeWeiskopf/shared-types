@@ -20,7 +20,7 @@ export const generateObject = <T>(
     if (!dataRef.ref.current) {
       throw new Error(`Missing ref: ${dataRef.refName}`);
     }
-    const { current }: { current: HTMLElement } = dataRef.ref;
+    const current: HTMLElement = dataRef.ref.current;
     if (isValueType(current)) {
       obj[dataRef.refName] = current.value;
     } else {
