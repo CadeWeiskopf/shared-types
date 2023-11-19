@@ -5,6 +5,19 @@ export type DataRef<T extends HTMLElement = HTMLElement> = {
   refName: string;
 };
 
+export const newRef = <T extends HTMLElement = HTMLElement>(
+  dataRefs: DataRef[],
+  ref: RefObject<T>,
+  refName: string
+) => {
+  const dataRef: DataRef = {
+    ref,
+    refName,
+  };
+  dataRefs.push(dataRef);
+  return ref;
+};
+
 const isValueType = <T extends HTMLElement>(
   element: T
 ): element is T & { value: string } => {
