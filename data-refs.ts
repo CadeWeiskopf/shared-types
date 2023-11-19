@@ -1,6 +1,8 @@
 import { RefObject } from "react";
 
-export type DataRef<T extends HTMLElement = HTMLElement> = {
+type DEFAULT_DATA_REF_TYPE = HTMLInputElement;
+
+export type DataRef<T extends HTMLElement = DEFAULT_DATA_REF_TYPE> = {
   ref: RefObject<T>;
   refName: string;
 };
@@ -22,7 +24,7 @@ export const generateObject = <T>(
   return obj as T;
 };
 
-export const getDataRef = <T extends HTMLElement = HTMLElement>(
+export const getDataRef = <T extends HTMLElement = DEFAULT_DATA_REF_TYPE>(
   refName: string,
   dataRefs: DataRef[]
 ): DataRef<T> => {
