@@ -5,6 +5,12 @@ export type DataRef<T extends HTMLElement = HTMLElement> = {
   refName: string;
 };
 
+const isValueType = <T extends HTMLElement>(
+  element: T
+): element is T & { value: string } => {
+  return "value" in element;
+};
+
 export const generateObject = <T>(
   typeGuard: (value: unknown) => value is T,
   dataRefs: DataRef[]
@@ -14,7 +20,14 @@ export const generateObject = <T>(
     if (!dataRef.ref.current) {
       throw new Error(`Missing ref: ${dataRef.refName}`);
     }
-    obj[dataRef.refName] = (dataRef.ref.current as HTMLInputElement).value;
+    const current: HTMLElement = dataRef.ref;
+    if (isValueType(current)) {
+      obj[dataRef.refName] = current.value;
+    } else {
+      console.error(
+        `skipped ${dataRef.refName} because "value" property is missing, check html element type`
+      );
+    }
   });
   if (!typeGuard(obj)) {
     throw Error(`generateObject failed typeGuard: ${JSON.stringify(obj)}`);
