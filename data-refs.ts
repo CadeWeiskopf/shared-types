@@ -1,8 +1,6 @@
 import { RefObject } from "react";
 
-type DEFAULT_DATA_REF_TYPE = HTMLInputElement;
-
-export type DataRef<T extends HTMLElement = DEFAULT_DATA_REF_TYPE> = {
+export type DataRef<T extends HTMLElement = HTMLElement> = {
   ref: RefObject<T>;
   refName: string;
 };
@@ -16,7 +14,7 @@ export const generateObject = <T>(
     if (!dataRef.ref.current) {
       throw new Error(`Missing ref: ${dataRef.refName}`);
     }
-    obj[dataRef.refName] = dataRef.ref.current.value;
+    obj[dataRef.refName] = (dataRef.ref.current as HTMLInputElement).value;
   });
   if (!typeGuard(obj)) {
     throw Error(`generateObject failed typeGuard: ${JSON.stringify(obj)}`);
@@ -24,7 +22,7 @@ export const generateObject = <T>(
   return obj as T;
 };
 
-export const getDataRef = <T extends HTMLElement = DEFAULT_DATA_REF_TYPE>(
+export const getDataRef = <T extends HTMLElement = HTMLElement>(
   refName: string,
   dataRefs: DataRef[]
 ): DataRef<T> => {
