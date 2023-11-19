@@ -26,7 +26,11 @@ const isValueType = <T extends HTMLElement>(
 const isCheckType = <T extends HTMLElement>(
   element: T
 ): element is T & { checked: boolean } => {
-  return "checked" in element;
+  return (
+    "type" in element &&
+    (element.type === "radio" || element.type === "checkbox") &&
+    "checked" in element
+  );
 };
 export const generateObject = <T>(
   typeGuard: (value: unknown) => value is T,
