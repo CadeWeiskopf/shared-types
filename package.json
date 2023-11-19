@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "email-validator": "^2.0.4"
+    "email-validator": "^2.0.4",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@types/email-validator": "^1.0.6"
