@@ -23,7 +23,11 @@ const isValueType = <T extends HTMLElement>(
 ): element is T & { value: string } => {
   return "value" in element;
 };
-
+const isCheckType = <T extends HTMLElement>(
+  element: T
+): element is T & { checked: boolean } => {
+  return "checked" in element;
+};
 export const generateObject = <T>(
   typeGuard: (value: unknown) => value is T,
   dataRefs: DataRef[]
@@ -35,7 +39,9 @@ export const generateObject = <T>(
     }
     const current: HTMLElement = dataRef.ref.current;
     if (isValueType(current)) {
-      obj[dataRef.refName] = current.value;
+      if (!isCheckType(current) || (isCheckType(current) && current.checked)) {
+        obj[dataRef.refName] = current.value;
+      }
     } else {
       console.error(
         `skipped ${dataRef.refName} because "value" property is missing, check html element type`
