@@ -9,7 +9,7 @@ export type EmailData = {
   phone?: string;
 };
 
-export const isIEmailData = (data: any): data is EmailData => {
+export const isEmailData = (data: any): data is EmailData => {
   if (
     typeof data !== "object" ||
     typeof data.firstName !== "string" ||
@@ -20,7 +20,7 @@ export const isIEmailData = (data: any): data is EmailData => {
     (data.companyName !== undefined && data.companyName.length <= 0) ||
     typeof data.email !== "string" ||
     data.email.trim().length <= 0 ||
-    emailValidator.validate(data.email) ||
+    !emailValidator.validate(data.email) ||
     (data.phone !== undefined && typeof data.phone !== "string")
   ) {
     return false;
