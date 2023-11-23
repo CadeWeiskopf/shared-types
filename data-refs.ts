@@ -10,10 +10,6 @@ export const newRef = <T extends HTMLElement = HTMLElement>(
   ref: RefObject<T>,
   refName: string
 ) => {
-  const isDuplicate = dataRefs.some((e) => e.refName === refName);
-  if (isDuplicate) {
-    throw Error(`Cannot have duplicate refName: ${refName}`);
-  }
   const dataRef: DataRef = {
     ref,
     refName,
