@@ -1,6 +1,6 @@
 import { RefObject, createRef } from "react";
 
-type DataRef<T extends HTMLElement = HTMLElement> = {
+export type DataRef<T extends HTMLElement = HTMLElement> = {
   ref: RefObject<T>;
   refName: string;
 };
