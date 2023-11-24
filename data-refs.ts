@@ -1,8 +1,12 @@
 import { RefObject, createRef } from "react";
+import AsyncLock from "async-lock";
+
+const asyncLock = new AsyncLock();
 
 export type DataRef<T extends HTMLElement = HTMLElement> = {
   ref: RefObject<T>;
   refName: string;
+  id: string;
 };
 
 const isValueType = <T extends HTMLElement>(
@@ -22,14 +26,28 @@ const isCheckType = <T extends HTMLElement>(
 };
 
 export class Form {
-  private dataRefs: DataRef[] = [];
-  getDataRefs = (): DataRef[] => this.dataRefs;
+  private formDataRefsLock = "formDataRefs";
+  handleformComponentMounted = (dataRef: DataRef) => {
+    asyncLock.acquire(this.formDataRefsLock, () => {
+      this.dataRefs = this.dataRefs.filter((dataRef) => dataRef.ref.current);
+    });
+  };
+
+  private _dataRefs: DataRef[] = [];
+  get dataRefs(): DataRef[] {
+    return this._dataRefs;
+  }
+  set dataRefs(value: DataRef[]) {
+    this._dataRefs = value;
+  }
 
   ref = <T extends HTMLElement = HTMLElement>(
+    id: string,
     refName: string
   ): RefObject<T> => {
     const ref = createRef<T>();
     this.dataRefs.push({
+      id,
       ref,
       refName,
     });
@@ -40,7 +58,12 @@ export class Form {
     const obj: Record<string, unknown> = {};
     this.dataRefs.forEach((dataRef) => {
       if (!dataRef.ref.current) {
-        throw new Error(`Missing ref: ${dataRef.refName}`);
+        console.log(this.dataRefs);
+        throw new Error(
+          `Missing ref ${dataRef.refName} in , ${JSON.stringify(
+            this.dataRefs.map((e) => e.refName)
+          )}`
+        );
       }
       const current: HTMLElement = dataRef.ref.current;
       if (isValueType(current)) {
