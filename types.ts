@@ -17,7 +17,6 @@ export const isEmailData = (data: any): data is EmailData => {
     typeof data.lastName !== "string" ||
     data.lastName.trim().length <= 0 ||
     (data.companyName !== undefined && typeof data.companyName !== "string") ||
-    (data.companyName !== undefined && data.companyName.length <= 0) ||
     typeof data.email !== "string" ||
     data.email.trim().length <= 0 ||
     !emailValidator.validate(data.email) ||
