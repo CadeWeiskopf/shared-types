@@ -1,9 +1,8 @@
-import { RefObject, createRef } from "react";
 import AsyncLock from "async-lock";
 
 const asyncLock = new AsyncLock();
 
-export type DataRef<T extends HTMLElement = HTMLElement> = {
+export type DataRef = {
   // ref: RefObject<T>;
   ref: HTMLInputElement;
   refName: string;
@@ -42,18 +41,6 @@ export class Form {
     this._dataRefs = value;
   }
 
-  // ref = <T extends HTMLElement = HTMLElement>(
-  //   id: string,
-  //   refName: string
-  // ): RefObject<T> => {
-  //   const ref = createRef<T>();
-  //   this.dataRefs.push({
-  //     id,
-  //     ref,
-  //     refName,
-  //   });
-  //   return ref;
-  // };
   ref = (id: string, domRef: HTMLInputElement, refName: string): void => {
     this.dataRefs.push({ id, ref: domRef, refName });
   };
