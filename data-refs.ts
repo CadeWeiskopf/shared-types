@@ -4,7 +4,8 @@ import AsyncLock from "async-lock";
 const asyncLock = new AsyncLock();
 
 export type DataRef<T extends HTMLElement = HTMLElement> = {
-  ref: RefObject<T>;
+  // ref: RefObject<T>;
+  ref: HTMLInputElement;
   refName: string;
   id: string;
 };
@@ -29,7 +30,7 @@ export class Form {
   private formDataRefsLock = "formDataRefs";
   handleformComponentMounted = (dataRef: DataRef) => {
     asyncLock.acquire(this.formDataRefsLock, () => {
-      this.dataRefs = this.dataRefs.filter((dataRef) => dataRef.ref.current);
+      this.dataRefs = this.dataRefs.filter((dataRef) => dataRef.ref);
     });
   };
 
@@ -41,23 +42,26 @@ export class Form {
     this._dataRefs = value;
   }
 
-  ref = <T extends HTMLElement = HTMLElement>(
-    id: string,
-    refName: string
-  ): RefObject<T> => {
-    const ref = createRef<T>();
-    this.dataRefs.push({
-      id,
-      ref,
-      refName,
-    });
-    return ref;
+  // ref = <T extends HTMLElement = HTMLElement>(
+  //   id: string,
+  //   refName: string
+  // ): RefObject<T> => {
+  //   const ref = createRef<T>();
+  //   this.dataRefs.push({
+  //     id,
+  //     ref,
+  //     refName,
+  //   });
+  //   return ref;
+  // };
+  ref = (id: string, domRef: HTMLInputElement, refName: string): void => {
+    this.dataRefs.push({ id, ref: domRef, refName });
   };
 
   data = <T>(typeGuard: (value: unknown) => value is T): T => {
     const obj: Record<string, unknown> = {};
     this.dataRefs.forEach((dataRef) => {
-      if (!dataRef.ref.current) {
+      if (!dataRef.ref) {
         console.log(this.dataRefs);
         throw new Error(
           `Missing ref ${dataRef.refName} in , ${JSON.stringify(
@@ -65,7 +69,7 @@ export class Form {
           )}`
         );
       }
-      const current: HTMLElement = dataRef.ref.current;
+      const current: HTMLElement = dataRef.ref;
       if (isValueType(current)) {
         if (
           !isCheckType(current) ||
